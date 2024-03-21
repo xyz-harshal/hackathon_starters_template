@@ -10,7 +10,8 @@ export const login = async (req, res) => {
         if (!data) return res.json({ error: true })
         else {
             let token = createToken(data._id)
-            if (data.password == password) return res.json({ error: false, token })
+            let name=data.username
+            if (data.password == password) return res.json({ error: false, token,name })
             else return res.json({ error: true })
         }
     }
@@ -19,17 +20,15 @@ export const login = async (req, res) => {
     }
 }
 export const register = async (req, res) => {
-    let { email, password } = req.body
+    let { email, password,username } = req.body
     try {
         let person = await userSchema.findOne({ email: email })
         if (person) return res.json({ error: true })
-        let user = userSchema({
-            email: email,
-            password: password
-        })
+        let user = userSchema({email,password,username})
         await user.save()
         let token = createToken(user._id)
-        res.status(200).json({ error: false, token })
+        let name=user.username
+        res.status(200).json({ error: false, token, name})
     }
     catch (e) {
         console.log(e.message)
