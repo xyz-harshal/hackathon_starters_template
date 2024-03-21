@@ -14,11 +14,12 @@
               error = false
               goto('/')
               Cookies.set('user',response?.data.token)
+              Cookies.set('name',response?.data.name)
           }
           else error=true;
       }
       catch(e){
-          console.log(e);
+          console.log(e)
       }
   }
 </script>

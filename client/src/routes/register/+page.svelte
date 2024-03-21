@@ -4,16 +4,19 @@
     import Cookies from "js-cookie"
     let registerData={
         email:"",
-        password:""
+        password:"",
+        username:""
     }
     let error=false
     let handleRegister=async()=>{
         try{
             let response = await axios.post("http://localhost:4000/user/register/", registerData)
+            console.log(response.data.name)
             if (!response?.data.error) {
                 error = false
                 goto('/')
                 Cookies.set('user',response?.data.token)
+                Cookies.set('name',response.data.name)
             }
             else error=true;
         }
@@ -21,7 +24,6 @@
             console.log(e);
         }
     }
-
 </script>
 
 <div class="hero min-h-screen bg-base-600">
@@ -56,6 +58,19 @@
                         name="password"
                         required
                         bind:value={registerData.password}
+                    />
+                </div>
+                <div class="form-control">
+                    <label class="label" for="email">
+                        <span class="label-text">Username</span>
+                    </label>
+                    <input
+                        type="text"
+                        placeholder="username"
+                        class="input input-bordered"
+                        name="username"
+                        required
+                        bind:value={registerData.username}
                     />
                 </div>
                 <div class="form-control mt-6">
